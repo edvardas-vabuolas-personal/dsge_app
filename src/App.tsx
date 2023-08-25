@@ -64,7 +64,7 @@ function App() {
         (mode === "N" ? ALLDNAMES : ONEDNAMES).indexOf(b)
     );
     setirfvars((prevState: string[]) => value);
-    mode === "N" ? setIRFs(initIRFsOneD) : setIRFs(initIRFsAllD);
+    mode === "N" ? setIRFs(initIRFsAllD) : setIRFs(initIRFsOneD);
     lastResult.current = result;
   };
 
@@ -73,14 +73,13 @@ function App() {
     if (value === "N") {
       setValues(init_values_all_d);
       setirfvars(ALLDNAMES);
-      setIRFs(initIRFsAllD)
+      setIRFs(initIRFsAllD);
       lastSlider.current = "phi_b";
       lastResult.current = {};
     } else {
       setValues(init_values);
       setirfvars(Object.keys(initIRFsOneD));
-      console.log(Object.keys(initIRFsOneD))
-      setIRFs(initIRFsOneD)
+      setIRFs(initIRFsOneD);
       lastSlider.current = "siggma_f";
       lastResult.current = {};
     }
