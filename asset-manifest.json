@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/dsge_app/static/css/main.fd7dc853.css",
-    "main.js": "/dsge_app/static/js/main.d28769c7.js",
+    "main.js": "/dsge_app/static/js/main.285283ed.js",
     "static/media/roboto-latin-400-normal.woff2": "/dsge_app/static/media/roboto-latin-400-normal.b009a76ad6afe4ebd301.woff2",
     "static/media/roboto-cyrillic-ext-400-normal.woff2": "/dsge_app/static/media/roboto-cyrillic-ext-400-normal.804378952da8a10faae2.woff2",
     "static/media/roboto-latin-400-normal.woff": "/dsge_app/static/media/roboto-latin-400-normal.3f2b9a42f643e62a49b7.woff",
@@ -18,10 +18,10 @@
     "static/media/roboto-greek-ext-400-normal.woff": "/dsge_app/static/media/roboto-greek-ext-400-normal.f708607d2a7290fb8bfa.woff",
     "index.html": "/dsge_app/index.html",
     "main.fd7dc853.css.map": "/dsge_app/static/css/main.fd7dc853.css.map",
-    "main.d28769c7.js.map": "/dsge_app/static/js/main.d28769c7.js.map"
+    "main.285283ed.js.map": "/dsge_app/static/js/main.285283ed.js.map"
   },
   "entrypoints": [
     "static/css/main.fd7dc853.css",
-    "static/js/main.d28769c7.js"
+    "static/js/main.285283ed.js"
   ]
 }
