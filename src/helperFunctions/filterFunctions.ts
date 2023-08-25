@@ -27,7 +27,7 @@ export function filterIRFs(
               ? newValues?.newValue?.value
               : filterArgs.stateValues["rho_g"])
       );
-  
+
       if (filteredResults.length > 0) {
         tempIRFs[irf_var] = filteredResults?.[0].slice(4);
       } else {
@@ -52,7 +52,7 @@ export function filterIRFsOneD(
     if (fResults[irf_var] !== undefined) {
       let filteredResults: Array<any> = fResults[irf_var].filter(
         (row: any) =>
-          row[0] === irf_var && row[1] === p_name && row[2] === p_val
+          row[1] === p_name && row[2] === p_val
       );
       if (filteredResults.length > 0) {
         tempIRFs[irf_var] = filteredResults?.[0].slice(3);
@@ -157,14 +157,12 @@ export function updIRFs(
       ? setIRFs(filterIRFs(lastResult.current, filterArgs, newValue))
       : setIRFs(filterIRFsOneD(lastResult.current, filterArgs, newKey, value));
   } else {
-    let resTemp: object | null =
+    lastResult.current =
       mode === "N"
         ? filterRes(result, filterArgs, newValue)
         : filterResOneD(resultOneD, filterArgs, newValue);
     mode === "N"
-      ? setIRFs(filterIRFs(resTemp, filterArgs, newValue))
-      : setIRFs(filterIRFsOneD(resTemp, filterArgs, newKey, value));
-    lastResult.current = resTemp;
-    resTemp = null;
+      ? setIRFs(filterIRFs(lastResult.current, filterArgs, newValue))
+      : setIRFs(filterIRFsOneD(lastResult.current, filterArgs, newKey, value));
   }
 }

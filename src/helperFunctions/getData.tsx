@@ -15,7 +15,7 @@ export const getCSV = (loadingFn: any) => {
       dynamicTyping: false,
       complete: (results) => {
         values[irf_var] = results["data"].map((row: any) => {
-          return row.map((element: string) => {
+          return row.slice(0, 34).map((element: string) => {
             const numericValue = parseFloat(element);
             return isNaN(numericValue) ? element : numericValue;
           });

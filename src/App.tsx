@@ -31,6 +31,8 @@ function App() {
     let CSVData: any[] | null = getCSV(setLoading);
     setResult(CSVData[1]);
     setResultOneD(CSVData[0]);
+
+    // Free up memory
     CSVData = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -40,7 +42,9 @@ function App() {
     stateValues: values,
   };
 
-  function handleOnD(event: any, value: any) {
+  function handleSliders(event: any, value: any) {
+    // This function updates graphs as sliders are changed
+
     const tValues = mode === "N" ? values : Object.assign({}, init_values);
     tValues[event.target.name] = value;
     setValues(tValues);
@@ -59,12 +63,15 @@ function App() {
   }
 
   const handleMulti = (event: any, value: any) => {
+    // This ensures that charts order matches that of toggles
     (value as unknown as string[]).sort(
       (a: string, b: string) =>
         (mode === "N" ? ALLDNAMES : ONEDNAMES).indexOf(a) -
         (mode === "N" ? ALLDNAMES : ONEDNAMES).indexOf(b)
     );
     setirfvars((prevState: string[]) => value);
+
+    // Free up memory
     lastSlider.current = "";
     lastResult.current = {};
   };
@@ -72,15 +79,23 @@ function App() {
   const handleMode = (event: any, value: any) => {
     setMode(value);
     if (value === "N") {
+
+      // Reset to initial values
       setValues(init_values_all_d);
       setirfvars(ALLDNAMES);
       setIRFs(initIRFsAllD);
+
+      // Free up memory
       lastSlider.current = "";
       lastResult.current = {};
     } else {
+
+      // Reset to initial values
       setValues(init_values);
       setirfvars(Object.keys(initIRFsOneD));
       setIRFs(initIRFsOneD);
+
+      // Free up memory
       lastSlider.current = "";
       lastResult.current = {};
     }
@@ -90,7 +105,7 @@ function App() {
 
   let sliders = getSliders(
     mode,
-    handleOnD,
+    handleSliders,
     mode === "N" ? ALLDPARAMS : ONEDPARAMS,
     values
   );
