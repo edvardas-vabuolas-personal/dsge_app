@@ -28,9 +28,10 @@ function App() {
   const lastResult = React.useRef<any>({});
 
   useEffect(() => {
-    let CSVData = getCSV(setLoading);
+    let CSVData: any[] | null = getCSV(setLoading);
     setResult(CSVData[1]);
     setResultOneD(CSVData[0]);
+    CSVData = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -64,8 +65,8 @@ function App() {
         (mode === "N" ? ALLDNAMES : ONEDNAMES).indexOf(b)
     );
     setirfvars((prevState: string[]) => value);
-    mode === "N" ? setIRFs(initIRFsAllD) : setIRFs(initIRFsOneD);
-    lastResult.current = result;
+    lastSlider.current = "";
+    lastResult.current = {};
   };
 
   const handleMode = (event: any, value: any) => {
@@ -74,13 +75,13 @@ function App() {
       setValues(init_values_all_d);
       setirfvars(ALLDNAMES);
       setIRFs(initIRFsAllD);
-      lastSlider.current = "phi_b";
+      lastSlider.current = "";
       lastResult.current = {};
     } else {
       setValues(init_values);
       setirfvars(Object.keys(initIRFsOneD));
       setIRFs(initIRFsOneD);
-      lastSlider.current = "siggma_f";
+      lastSlider.current = "";
       lastResult.current = {};
     }
   };
