@@ -1,8 +1,8 @@
 export function filterIRFs(
-  fResults: any,
-  filterArgs: { irf_vars: any; stateValues: any },
+  fResults: Record<string, (string | number)[]>,
+  filterArgs: { irf_vars: string[]; stateValues: Record<string, number> },
   newValues?: {
-    newIRFVars?: string[] | string | undefined;
+    newIRFVars?: string[] | undefined;
     newValue?: {
       key: string;
       value: number;
@@ -41,9 +41,9 @@ export function filterIRFs(
 }
 
 export function filterIRFsOneD(
-  fResults: any,
-  filterArgs: { irf_vars: any; stateValues: any },
-  p_name: any,
+  fResults: Record<string, (string | number)[]>,
+  filterArgs: { irf_vars: string[]; stateValues: Record<string, number> },
+  p_name: string,
   p_val: number,
   newIRFs?: string[]
 ) {
@@ -67,8 +67,8 @@ export function filterIRFsOneD(
 }
 
 export function filterRes(
-  Results: any,
-  filterArgs: { irf_vars: any; stateValues: any },
+  Results: Record<string, (string | number)[]>,
+  filterArgs: { irf_vars: string[]; stateValues: Record<string, number> },
   newValues?: {
     newValue?: {
       key: string;
@@ -76,7 +76,7 @@ export function filterRes(
     };
   }
 ) {
-  const tempResult: any = {};
+  const tempResult: Record<string, (string | number)[]> = {};
   filterArgs.irf_vars.forEach((irf_var: string) => {
     let filteredResults;
     if (Results[irf_var] !== undefined) {
@@ -112,8 +112,8 @@ export function filterRes(
 }
 
 export function filterResOneD(
-  Results: any,
-  filterArgs: { irf_vars: any; stateValues: any },
+  Results: Record<string, (string | number)[]>,
+  filterArgs: { irf_vars: string[]; stateValues: Record<string, number> },
   newValues?: {
     newValue?: {
       key: string;
@@ -121,7 +121,7 @@ export function filterResOneD(
     };
   }
 ) {
-  const tempResult: any = {};
+  const tempResult: Record<string, (string | number)[]> = {};
   filterArgs.irf_vars.forEach((irf_var: string) => {
     let filteredResults;
     if (Results[irf_var] !== undefined) {
@@ -143,11 +143,11 @@ export function filterResOneD(
 export function updIRFs(
   value: number,
   newKey: string,
-  result: any,
-  lastSlider: any,
-  setIRFs: any,
+  result: Record<string, (string | number)[]>,
+  lastSlider: React.MutableRefObject<string>,
+  setIRFs: React.Dispatch<any>,
   mode: string,
-  lastResult: any,
+  lastResult: React.MutableRefObject<Record<string, (string | number)[]>>,
   filterArgs: any,
   resultOneD: any
 ) {

@@ -1,10 +1,10 @@
 import * as React from "react";
-import { latexNames } from "../static/latex_names";
+import { latexNames } from "../static/latexNames";
 import Latex from "react-latex";
 import ToggleButton from "@mui/material/ToggleButton";
 import { StyledToggleButtonGroup } from "../appstyles";
 
-export default function MultipleSelectChip(args: any) {
+export default function VariableToggles(args: any) {
   const toggleButtons: any[] = [];
   args["p_irf_vars"].forEach((name: string) => {
     toggleButtons.push(

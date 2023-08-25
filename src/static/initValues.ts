@@ -1,4 +1,4 @@
-// export const init_values: Record<string, number> = {
+// export const INITVALUES: Record<string, number> = {
 //   betta: 0.99,
 //   siggma: 0.44,
 //   varphi: 2.2,
@@ -50,7 +50,7 @@
 //   tau_ss_uk: 0.08629 * 0.256313 + (1 - 0.08629) * 0.179667,
 // };
 
-export const init_values: Record<string, number> = {
+export const INITVALUES: Record<string, number> = {
   betta: 50,
   siggma: 50,
   varphi: 50,
@@ -102,13 +102,13 @@ export const init_values: Record<string, number> = {
   tau_ss_uk: 50,
 };
 
-export const init_values_all_d: Record<string, number> = {
+export const INITVALUESALLD: Record<string, number> = {
   phi_g: 0.1,
   phi_b: 0.35,
   rho_g: 0.8,
 };
 
-export const p_params: Record<string, Record<string, number>> = {
+export const pParams: Record<string, Record<string, number>> = {
   siggma: { min: 0.0, max: 0.88, step: 0.0088 },
   betta: { min: 0.0, max: 1.98, step: 0.0198 },
   varphi: { min: 0.0, max: 4.4, step: 0.044 },

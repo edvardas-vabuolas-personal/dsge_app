@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import { ALLDNAMES, ONEDNAMES } from "../static/var_names";
+import { ALLDNAMES, ONEDNAMES } from "../static/dynareNames";
 
 export const getCSV = (loadingFn: any) => {
   let values: any = {}

@@ -1,7 +1,7 @@
 import * as AppStyles from "../appstyles";
 import Latex from "react-latex";
-import { latexNames } from "../static/latex_names";
-import LineChart from "./Line";
+import { latexNames } from "../static/latexNames";
+import LineChart from "./LineChart";
 
 export function getCharts(irf_vars: any, IRFs: any) {
 const labels = Array.from(Array(32).keys())

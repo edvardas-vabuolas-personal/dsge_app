@@ -1,19 +1,19 @@
+import "@fontsource/roboto/400.css";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
-import "@fontsource/roboto/400.css";
-import Latex from "react-latex";
-import { latexNames } from "../static/latex_names";
-import { p_params } from "../static/init_values";
 import React from "react";
+import Latex from "react-latex";
+import { pParams } from "../static/initValues";
+import { latexNames } from "../static/latexNames";
 
-export default function SliderSizes(args: any) {
+export default function LatexSliders(args: any) {
   let name = args["labelParams"]["name"];
-  let pParams = p_params[name];
+  // let pParams = pParams[name];
   let min = 0;
   let max = args["mode"] === "1" ? 100 : 1;
   let step = args["mode"] === "1" ? 1 : 0.05;
-  let adj = args["mode"] === "1" ? pParams["step"] : 1;
+  let adj = args["mode"] === "1" ? pParams[name]["step"] : 1;
   return (
     <Box>
       <Typography id="input-slider" gutterBottom variant="h5">
@@ -29,15 +29,15 @@ export default function SliderSizes(args: any) {
           </Latex>
         }
       </Typography>
-        <Slider
-          value={args["labelParams"]["value"]}
-          aria-label="Default"
-          onChange={args["onChangeFunc"]}
-          name={name}
-          min={min}
-          max={max}
-          step={step}
-        />
+      <Slider
+        value={args["labelParams"]["value"]}
+        aria-label="Default"
+        onChange={args["onChangeFunc"]}
+        name={name}
+        min={min}
+        max={max}
+        step={step}
+      />
     </Box>
   );
 }

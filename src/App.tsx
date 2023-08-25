@@ -1,31 +1,37 @@
+import { CircularProgress } from "@mui/material";
 import React, { useEffect } from "react";
 import * as AppStyles from "./appstyles";
-import MultipleSelectChip from "./components/variables";
-import { updIRFs } from "./helperFunctions/filterFunctions";
 import { getCharts } from "./components/getCharts";
 import { getSliders } from "./components/getSliders";
-import { initIRFsAllD, initIRFsOneD } from "./static/initIRFs";
-import SelectMode from "./components/mode";
+import SelectMode from "./components/ModeToggles";
+import VariableToggles from "./components/VariableToggles";
+import { updIRFs } from "./helperFunctions/filterFunctions";
 import { getCSV } from "./helperFunctions/getData";
+import { initIRFsAllD, initIRFsOneD } from "./static/initIRFs";
+import { INITVALUES, INITVALUESALLD } from "./static/initValues";
 import {
   ALLDNAMES,
   ALLDPARAMS,
   ONEDNAMES,
   ONEDPARAMS,
-} from "./static/var_names";
-import { init_values, init_values_all_d } from "./static/init_values";
-import { CircularProgress } from "@mui/material";
+} from "./static/dynareNames";
 
 function App() {
-  const [mode, setMode] = React.useState<any>("N");
-  const [irf_vars, setirfvars] = React.useState<any>(ALLDNAMES);
-  const [values, setValues] = React.useState<any>(init_values_all_d);
-  const [IRFs, setIRFs] = React.useState<any>(initIRFsAllD);
-  const [result, setResult] = React.useState<any>({});
-  const [resultOneD, setResultOneD] = React.useState<any>({});
-  const [loading, setLoading] = React.useState<any>(true);
+  const [mode, setMode] = React.useState<string>("N");
+  const [irf_vars, setirfvars] = React.useState<string[]>(ALLDNAMES);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const lastSlider = React.useRef<string>("");
-  const lastResult = React.useRef<any>({});
+  const lastResult = React.useRef<Record<string, (string | number)[]>>({});
+  const [values, setValues] =
+    React.useState<Record<string, number>>(INITVALUESALLD);
+  const [IRFs, setIRFs] =
+    React.useState<Record<string, number[]>>(initIRFsAllD);
+  const [result, setResult] = React.useState<
+    Record<string, (string | number)[]>
+  >({});
+  const [resultOneD, setResultOneD] = React.useState<
+    Record<string, (string | number)[]>
+  >({});
 
   useEffect(() => {
     let CSVData: any[] | null = getCSV(setLoading);
@@ -42,10 +48,10 @@ function App() {
     stateValues: values,
   };
 
-  function handleSliders(event: any, value: any) {
+  function handleSliders(event: any, value: number) {
     // This function updates graphs as sliders are changed
 
-    const tValues = mode === "N" ? values : Object.assign({}, init_values);
+    const tValues = mode === "N" ? values : Object.assign({}, INITVALUES);
     tValues[event.target.name] = value;
     setValues(tValues);
     updIRFs(
@@ -62,7 +68,10 @@ function App() {
     lastSlider.current = event.target.name;
   }
 
-  const handleMulti = (event: any, value: any) => {
+  const handleMulti = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    value: string[]
+  ) => {
     // This ensures that charts order matches that of toggles
     (value as unknown as string[]).sort(
       (a: string, b: string) =>
@@ -76,12 +85,14 @@ function App() {
     lastResult.current = {};
   };
 
-  const handleMode = (event: any, value: any) => {
+  const handleMode = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    value: any
+  ) => {
     setMode(value);
     if (value === "N") {
-
       // Reset to initial values
-      setValues(init_values_all_d);
+      setValues(INITVALUESALLD);
       setirfvars(ALLDNAMES);
       setIRFs(initIRFsAllD);
 
@@ -89,9 +100,8 @@ function App() {
       lastSlider.current = "";
       lastResult.current = {};
     } else {
-
       // Reset to initial values
-      setValues(init_values);
+      setValues(INITVALUES);
       setirfvars(Object.keys(initIRFsOneD));
       setIRFs(initIRFsOneD);
 
@@ -115,7 +125,7 @@ function App() {
       <AppStyles.RightPanelDiv>
         <SelectMode mode_fn={handleMode} mode={mode} />
         <AppStyles.VarDiv>
-          <MultipleSelectChip
+          <VariableToggles
             irf_vars={irf_vars}
             irf_vars_fn={handleMulti}
             p_irf_vars={mode === "N" ? ALLDNAMES : ONEDNAMES}
