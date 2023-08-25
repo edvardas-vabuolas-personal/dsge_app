@@ -1,11 +1,12 @@
 import Papa from "papaparse";
-import { var_names, all_d_var_names } from "../static/var_names";
+import { ALLDNAMES, ONEDNAMES } from "../static/var_names";
 
 export const getCSV = (loadingFn: any) => {
   let values: any = {}
   let values_all_d: any = {}
   loadingFn(true)
-  var_names.forEach((irf_var: string) => {
+  // Fetch One Dynamic Data
+  ONEDNAMES.forEach((irf_var: string) => {
     Papa.parse(`https://edvardas-vabuolas-personal.github.io/test_data.github.io/Data/f4/${irf_var}.csv`, {
       header: false,
       download: true,
@@ -22,7 +23,9 @@ export const getCSV = (loadingFn: any) => {
       },
     });
   });
-  all_d_var_names.forEach((irf_var: string) => {
+
+  // Fetch All Dynamic Data
+  ALLDNAMES.forEach((irf_var: string) => {
     Papa.parse(`https://edvardas-vabuolas-personal.github.io/test_data.github.io/Data/${irf_var}.csv`, {
       header: false,
       download: true,

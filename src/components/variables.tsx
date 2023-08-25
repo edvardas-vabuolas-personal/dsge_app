@@ -1,25 +1,8 @@
 import * as React from "react";
 import { latexNames } from "../static/latex_names";
 import Latex from "react-latex";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-import { styled } from "@mui/material/styles";
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  "& .MuiToggleButtonGroup-grouped": {
-    margin: theme.spacing(0.5),
-    border: 0,
-    "&.Mui-disabled": {
-      border: 0,
-    },
-    "&:not(:first-of-type)": {
-      borderRadius: theme.shape.borderRadius,
-    },
-    "&:first-of-type": {
-      borderRadius: theme.shape.borderRadius,
-    },
-  },
-}));
+import { StyledToggleButtonGroup } from "../appstyles";
 
 export default function MultipleSelectChip(args: any) {
   const toggleButtons: any[] = [];

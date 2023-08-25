@@ -1,9 +1,11 @@
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup/ToggleButtonGroup";
 import { styled } from "@mui/system";
 
 export const WrapperDiv = styled("div")({
   display: "flex",
+  height: '100vh',
   flexDirection: "column",
-  flexGrow: '3',
+  flexGrow: '1',
   textAlign: 'center',
   // border: '5px solid black'
 });
@@ -12,23 +14,35 @@ type InputProps = {
   width: number
 }
 
+export const ProgressDiv = styled('div')({
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+})
+
 export const ChartsDiv = styled('div')<InputProps>(({ width }) => ({
   display: "grid",
   gridTemplateColumns: `repeat(auto-fit, minmax(${width}%, 1fr))`,
+  height: "100vh",
+  overflow: 'auto',
+  alignContent: 'baseline',
 }))
 
 export const LiStyled = styled("div")({
 });
 
 export const VarDiv = styled('div')({
-  height: '20em',
-  overflow: 'auto'
+  height: '43vh !important',
+  overflowY: 'auto',
+  overflowX: 'hidden'
 })
 
 export const SlidersDiv = styled('div')({
-  height: '20em',
-  overflow: 'auto',
-  padding: '1em'
+  height: '43vh !important',
+  width: '14vw !important',
+  overflowY: 'auto',
+  overflowX: 'hidden'
 })
 
 export const RightPanelDiv = styled("div")({
@@ -41,7 +55,6 @@ export const RightPanelDiv = styled("div")({
 });
 
 export const SliderDiv = styled("div")({
-  // paddingLeft: "10rem",
 });
 
 export const MainDiv = styled("div")({
@@ -49,7 +62,6 @@ export const MainDiv = styled("div")({
   display: "flex",
   flexDirection: "row",
   padding: '1em',
-  // border: '5px solid green'
 });
 
 
@@ -68,4 +80,21 @@ export const LegendBox = styled("div")({
   alignItems: "center",
 });
 
-export {};
+
+export const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  "& .MuiToggleButtonGroup-grouped": {
+    border: 0,
+    "&.Mui-disabled": {
+      border: 0,
+    },
+    "&:not(:first-of-type)": {
+      borderRadius: theme.shape.borderRadius,
+    },
+    "&:first-of-type": {
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+  display: 'grid',
+  gridTemplateColumns: '7vw 7vw',
+  marginBottom: '1em'
+}));

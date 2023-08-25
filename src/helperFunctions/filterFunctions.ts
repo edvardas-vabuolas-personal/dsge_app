@@ -26,11 +26,11 @@ export function filterIRFs(
             ? newValues?.newValue?.value
             : filterArgs.stateValues["rho_g"])
     );
-    
+
     if (filteredResults.length > 0) {
       tempIRFs[irf_var] = filteredResults?.[0].slice(4);
     } else {
-      console.log('filteredResults are empty. FilterIRFs')
+      console.log("filteredResults are empty. FilterIRFs");
     }
   });
   return tempIRFs;
@@ -39,8 +39,8 @@ export function filterIRFs(
 export function filterIRFsOneD(
   fResults: any,
   filterArgs: { irf_vars: any; stateValues: any },
-  p_name?: string,
-  p_val?: number,
+  p_name: any,
+  p_val: number,
   newIRFs?: string[]
 ) {
   const tempIRFs: any = {};
@@ -53,10 +53,10 @@ export function filterIRFsOneD(
       if (filteredResults.length > 0) {
         tempIRFs[irf_var] = filteredResults?.[0].slice(3);
       } else {
-        console.log('filteredResults are empty. FilterIRFsOneD')
+        console.log("filteredResults are empty. FilterIRFsOneD");
       }
     } else {
-      console.log('Variable not found in Results')
+      console.log("Variable not found in Results");
     }
   });
   return tempIRFs;
@@ -97,7 +97,7 @@ export function filterRes(
     if (filteredResults.length > 0) {
       tempResult[irf_var] = filteredResults;
     } else {
-      console.log('filteredResults are empty. FilterRes')
+      console.log("filteredResults are empty. FilterRes");
     }
   });
   return tempResult;
@@ -117,14 +117,41 @@ export function filterResOneD(
   filterArgs.irf_vars.forEach((irf_var: string) => {
     let filteredResults;
     filteredResults = Results[irf_var].filter(
-      (row: any) =>
-        row[1] === newValues?.newValue?.key
+      (row: any) => row[1] === newValues?.newValue?.key
     );
     if (filteredResults.length > 0) {
       tempResult[irf_var] = filteredResults;
     } else {
-      console.log('filteredResults are empty. FilterResOneD')
+      console.log("filteredResults are empty. FilterResOneD");
     }
   });
   return tempResult;
+}
+
+export function updIRFs(
+  value: number,
+  newKey: string,
+  result: any,
+  lastSlider: any,
+  setIRFs: any,
+  mode: string,
+  lastResult: any,
+  filterArgs: any,
+  resultOneD: any
+) {
+  let newValue = { newValue: { key: newKey, value: value } };
+  if (lastSlider.current === newKey) {
+    mode === "N"
+      ? setIRFs(filterIRFs(lastResult.current, filterArgs, newValue))
+      : setIRFs(filterIRFsOneD(lastResult.current, filterArgs, newKey, value));
+  } else {
+    let resTemp =
+      mode === "N"
+        ? filterRes(result, filterArgs, newValue)
+        : filterResOneD(resultOneD, filterArgs, newValue);
+    mode === "N"
+      ? setIRFs(filterIRFs(resTemp, filterArgs, newValue))
+      : setIRFs(filterIRFsOneD(resTemp, filterArgs, newKey, value));
+    lastResult.current = resTemp;
+  }
 }

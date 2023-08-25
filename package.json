@@ -1,7 +1,7 @@
 {
   "name": "dsge-app",
   "version": "0.1.0",
-  "homepage": "https://edvardas-vabuolas-personal.github.io/test",
+  "homepage": "https://edvardas-vabuolas-personal.github.io/dsge_app",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",

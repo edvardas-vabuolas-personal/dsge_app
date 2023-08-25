@@ -1,37 +1,31 @@
 import React, { useEffect } from "react";
 import * as AppStyles from "./appstyles";
 import MultipleSelectChip from "./components/variables";
-import {
-  filterIRFs,
-  filterRes,
-  filterIRFsOneD,
-  filterResOneD,
-} from "./helperFunctions/filterFunctions";
+import { updIRFs } from "./helperFunctions/filterFunctions";
 import { getCharts } from "./components/getCharts";
 import { getSliders } from "./components/getSliders";
-import { initIRFs } from "./static/initIRFs";
+import { initIRFsAllD, initIRFsOneD } from "./static/initIRFs";
 import SelectMode from "./components/mode";
-import { getCSV } from "./components/getData";
+import { getCSV } from "./helperFunctions/getData";
 import {
-  all_d_names,
-  all_d_var_names,
-  param_names,
-  var_names,
+  ALLDNAMES,
+  ALLDPARAMS,
+  ONEDNAMES,
+  ONEDPARAMS,
 } from "./static/var_names";
 import { init_values, init_values_all_d } from "./static/init_values";
 import { CircularProgress } from "@mui/material";
 
 function App() {
-  // const result = useReadCSV();
   const [mode, setMode] = React.useState<any>("N");
-  const [irf_vars, setirfvars] = React.useState<any>(["b"]);
+  const [irf_vars, setirfvars] = React.useState<any>(ALLDNAMES);
   const [values, setValues] = React.useState<any>(init_values_all_d);
-  const [IRFs, setIRFs] = React.useState<any>(initIRFs);
-  const [lastSlider, setlastSlider] = React.useState<any>();
-  const [lastResult, setlastResult] = React.useState<any>();
+  const [IRFs, setIRFs] = React.useState<any>(initIRFsAllD);
   const [result, setResult] = React.useState<any>({});
   const [resultOneD, setResultOneD] = React.useState<any>({});
   const [loading, setLoading] = React.useState<any>(true);
+  const lastSlider = React.useRef<string>("");
+  const lastResult = React.useRef<any>({});
 
   useEffect(() => {
     let CSVData = getCSV(setLoading);
@@ -45,58 +39,51 @@ function App() {
     stateValues: values,
   };
 
-  function updIRFs(value: number, newKey: string, result: any) {
-    let newValue = { newValue: { key: newKey, value: value } };
-    if (lastSlider === newKey) {
-      mode === "N"
-        ? setIRFs(filterIRFs(lastResult, filterArgs, newValue))
-        : setIRFs(filterIRFsOneD(lastResult, filterArgs, newKey, value));
-    } else {
-      let resTemp =
-        mode === "N"
-          ? filterRes(result, filterArgs, newValue)
-          : filterResOneD(resultOneD, filterArgs, newValue);
-      mode === "N"
-        ? setIRFs(filterIRFs(resTemp, filterArgs, newValue))
-        : setIRFs(filterIRFsOneD(resTemp, filterArgs, newKey, value));
-      setlastResult(resTemp);
-    }
-  }
-
   function handleOnD(event: any, value: any) {
     const tValues = mode === "N" ? values : Object.assign({}, init_values);
     tValues[event.target.name] = value;
     setValues(tValues);
-    updIRFs(value, event.target.name, result);
-    setlastSlider(event.target.name);
+    updIRFs(
+      value,
+      event.target.name,
+      result,
+      lastSlider,
+      setIRFs,
+      mode,
+      lastResult,
+      filterArgs,
+      resultOneD
+    );
+    lastSlider.current = event.target.name;
   }
 
   const handleMulti = (event: any, value: any) => {
     (value as unknown as string[]).sort(
       (a: string, b: string) =>
-        (mode === "N" ? all_d_var_names : var_names).indexOf(a) -
-        (mode === "N" ? all_d_var_names : var_names).indexOf(b)
+        (mode === "N" ? ALLDNAMES : ONEDNAMES).indexOf(a) -
+        (mode === "N" ? ALLDNAMES : ONEDNAMES).indexOf(b)
     );
     setirfvars((prevState: string[]) => value);
-    let tempIRFs =
-      mode === "N"
-        ? filterIRFs(result, filterArgs, { newIRFVars: value })
-        : filterIRFsOneD(
-            resultOneD,
-            filterArgs,
-            lastSlider,
-            values[lastSlider],
-            value
-          );
-    setIRFs(tempIRFs);
-    setlastResult(result);
+    mode === "N" ? setIRFs(initIRFsOneD) : setIRFs(initIRFsAllD);
+    lastResult.current = result;
   };
 
   const handleMode = (event: any, value: any) => {
     setMode(value);
-    value === "N" ? setValues(init_values_all_d) : setValues(init_values);
-    value === "N" ? setirfvars(["b"]) : setirfvars(["b_uk"]);
-    console.log(resultOneD)
+    if (value === "N") {
+      setValues(init_values_all_d);
+      setirfvars(ALLDNAMES);
+      setIRFs(initIRFsAllD)
+      lastSlider.current = "phi_b";
+      lastResult.current = {};
+    } else {
+      setValues(init_values);
+      setirfvars(Object.keys(initIRFsOneD));
+      console.log(Object.keys(initIRFsOneD))
+      setIRFs(initIRFsOneD)
+      lastSlider.current = "siggma_f";
+      lastResult.current = {};
+    }
   };
 
   const charts = getCharts(irf_vars, IRFs);
@@ -104,7 +91,7 @@ function App() {
   let sliders = getSliders(
     mode,
     handleOnD,
-    mode === "N" ? all_d_names : param_names,
+    mode === "N" ? ALLDPARAMS : ONEDPARAMS,
     values
   );
 
@@ -116,7 +103,7 @@ function App() {
           <MultipleSelectChip
             irf_vars={irf_vars}
             irf_vars_fn={handleMulti}
-            p_irf_vars={mode === "N" ? all_d_var_names : var_names}
+            p_irf_vars={mode === "N" ? ALLDNAMES : ONEDNAMES}
           />
         </AppStyles.VarDiv>
         <AppStyles.SlidersDiv>{sliders}</AppStyles.SlidersDiv>
@@ -128,7 +115,9 @@ function App() {
       </AppStyles.WrapperDiv>
     </AppStyles.MainDiv>
   ) : (
-    <CircularProgress />
+    <AppStyles.ProgressDiv>
+      <CircularProgress size={"20em"} />
+    </AppStyles.ProgressDiv>
   );
 }
 
