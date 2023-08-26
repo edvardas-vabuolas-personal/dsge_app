@@ -33,13 +33,13 @@ export const LiStyled = styled("div")({
 });
 
 export const VarDiv = styled('div')({
-  height: '43vh !important',
+  height: '40vh !important',
   overflowY: 'auto',
   overflowX: 'hidden'
 })
 
 export const SlidersDiv = styled('div')({
-  height: '43vh !important',
+  height: '40vh !important',
   width: '14vw !important',
   overflowY: 'auto',
   overflowX: 'hidden'
@@ -96,5 +96,14 @@ export const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => 
   },
   display: 'grid',
   gridTemplateColumns: '7vw 7vw',
-  marginBottom: '1em'
+  marginBottom: '3em',
+  // [theme.breakpoints.down('md')]: {
+  //   backgroundColor: 'red',
+  // },
+  // [theme.breakpoints.up('md')]: {
+  //   backgroundColor: 'blue',
+  // },
+  // [theme.breakpoints.up('lg')]: {
+  //   backgroundColor: 'black',
+  // },
 }));
